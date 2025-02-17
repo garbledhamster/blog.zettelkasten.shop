@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Make sure we scale properly on mobile -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>💥 zettelkasten.shop 💥</title>
+  <!-- Favicons and metadata -->
+  <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
+  <link rel="manifest" href="images/favicon/site.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="images/favicon/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="images/favicon/android-chrome-512x512.png">
+  <meta name="theme-color" content="#402554">
+  <link href="https://fonts.googleapis.com/css2?family=PT+Mono&family=PT+Sans+Pro&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-bg: #402554;
+      --header-color: #E6B7FF;
+      --paragraph-color: #ffffff;
+      --border-color: #C51BFE;
+      --sidebar-width: 300px;
+    }
+    
+    body {
+      font-family: 'PT Sans Pro', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--primary-bg);
+      color: var(--paragraph-color);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* Top Menu Bar - Fixed & using PT Mono font! */
+    #menu {
+      display: flex;
+      align-items: center;
+      background-color: var(--primary-bg);
+      padding: 10px 20px;
+      border-bottom: 4px solid var(--border-color);
+      font-family: 'PT Mono', monospace;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 2000; /* Ensure the bar is always above the sidebar */
+    }
+
+    #menu-toggle {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--paragraph-color);
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    #menu a {
+      margin-right: 20px;
+      text-decoration: none;
+      color: var(--paragraph-color);
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #menu a:hover {
+      text-decoration: underline;
+    }
+
+    /* Container for content - add top margin to avoid overlap with fixed menu */
+    .container {
+      margin-top: 60px;
+      min-height: calc(100vh - 60px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Sidebar (overlay approach) */
+    .sidebar {
+      position: fixed;
+      top: 60px; /* just under the menu bar */
+      left: 0;
+      width: var(--sidebar-width);
+      bottom: 0;
+      background: var(--primary-bg);
+      border-right: 4px solid var(--border-color);
+      padding: 20px;
+      font-family: 'PT Mono', monospace;
+      overflow-y: auto;
+      /* Slide in/out with transform + transition */
+      transform: translateX(0);
+      transition: transform 0.3s ease;
+      z-index: 1500;
+    }
+
+    /* If hidden, shift fully to the left */
+    .sidebar.hidden {
+      transform: translateX(-100%);
+    }
+
+    .sidebar h2 {
+      margin-top: 0;
+      color: var(--header-color);
+    }
+
+    /* Search box styling */
+    #search-box {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+      border: 2px solid var(--border-color);
+      font-family: 'PT Sans Pro', sans-serif;
+      font-size: 1rem;
+      background-color: transparent;
+      color: var(--paragraph-color);
+    }
+
+    .card {
+      background: transparent;
+      border: 2px solid var(--border-color);
+      margin-bottom: 15px;
+      padding: 10px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .card:hover {
+      background-color: rgba(197, 27, 254, 0.1);
+    }
+
+    .card .title {
+      font-size: 1.2em;
+      font-weight: bold;
+      font-family: 'PT Mono', monospace;
+      color: var(--header-color);
+    }
+
+    .card .date {
+      font-size: 0.9em;
+      font-family: 'PT Mono', monospace;
+      color: var(--paragraph-color);
+    }
+
+    /* Content area is always centered */
+    .content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .content h1,
+    .content h2,
+    .content h3,
+    .content h4,
+    .content h5,
+    .content h6 {
+      font-family: 'PT Mono', monospace;
+      color: var(--header-color);
+      margin-top: 1em;
+      margin-bottom: 0.5em;
+      line-height: 1.3;
+    }
+
+    .content p,
+    .content pre,
+    .content code,
+    .content ul,
+    .content ol,
+    .content li {
+      font-family: 'PT Sans Pro', sans-serif;
+      margin-bottom: 1.5em;
+      max-width: 65ch; 
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .content blockquote {
+      font-family: 'PT Mono', monospace;
+      border-left: 4px solid var(--border-color);
+      padding-left: 10px;
+      color: var(--paragraph-color);
+      margin: 1em auto;
+      max-width: 65ch;
+    }
+
+    .content img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 1em auto;
+    }
+
+    .content h1::after {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 4px;
+      background-color: var(--border-color);
+      margin-top: 10px;
+    }
+
+    /* Share button styling */
+    #share-button {
+      margin-bottom: 15px;
+      padding: 5px 10px;
+      font-family: 'PT Sans Pro', sans-serif;
+      cursor: pointer;
+      border: 2px solid var(--border-color);
+      background: transparent;
+      color: var(--paragraph-color);
+    }
+
+    #share-button:hover {
+      background-color: rgba(197, 27, 254, 0.1);
+    }
+
+    /* Mobile responsiveness */
+    @media screen and (max-width: 768px) {
+      /* By default, hide sidebar on mobile */
+      .sidebar {
+        transform: translateX(-100%);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Menu Bar -->
+  <nav id="menu">
+    <button id="menu-toggle">☰</button>
+    <a href="#" id="home-menu">Home</a>
+    <a href="#" id="about-menu">About</a>
+  </nav>
+
+  <div class="container">
+    <div class="sidebar" id="sidebar">
+      <h2>📝 Microblogs</h2>
+      <input type="text" id="search-box" placeholder="Search microblogs..." />
+      <div id="posts-container"></div>
+    </div>
+    <div class="content" id="content">
+      <h1>zettelkasten.shop</h1>
+      <p>Welcome to zettelkasten.shop—a clean space for background-knowledge microblogs. Here, I share brief bursts of thought (each under 9 sentences) inspired by daily insights. Select a microblog from the sidebar to dive in.</p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    // Decide initial state: 
+    // Desktop -> sidebar open 
+    // Mobile -> sidebar hidden (handled via CSS media query)
+    function setInitialSidebarState() {
+      const sidebar = document.getElementById('sidebar');
+      if (window.innerWidth > 768) {
+        // Desktop: Show sidebar
+        sidebar.classList.remove('hidden');
+        sidebar.style.transform = 'translateX(0)';
+      } else {
+        // Mobile: Hide sidebar 
+        sidebar.classList.add('hidden');
+        sidebar.style.transform = 'translateX(-100%)';
+      }
+    }
+
+    // Toggle sidebar with button
+    document.getElementById('menu-toggle').addEventListener('click', () => {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('hidden');
+      if (sidebar.classList.contains('hidden')) {
+        sidebar.style.transform = 'translateX(-100%)';
+      } else {
+        sidebar.style.transform = 'translateX(0)';
+      }
+    });
+
+    // On resize, check if we need to open or close the sidebar by default
+    window.addEventListener('resize', () => {
+      setInitialSidebarState();
+    });
+
+    // For loading the microblog content
+    let validPostsGlobal = [];
+    const defaultContent = '<h1>zettelkasten.shop</h1><p>Welcome to zettelkasten.shop—a clean space for background-knowledge microblogs. Here, I share brief bursts of thought (each under 9 sentences) inspired by daily insights. Select a microblog from the sidebar to dive in.</p>';
+
+    function formatDate(dateStr) {
+      const options = { year: 'numeric', month: 'short', day: 'numeric' };
+      return new Date(dateStr).toLocaleDateString(undefined, options);
+    }
+
+    // Dynamically replace plain YouTube links with embed iframes
+    function embedYouTubeVideos(html) {
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = html;
+      tempDiv.querySelectorAll('p').forEach(p => {
+        const text = p.textContent.trim();
+        const youtubeRegex = /^(https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/))([A-Za-z0-9_-]{11})(?:\S*)$/;
+        const match = text.match(youtubeRegex);
+        if (match) {
+          const videoId = match[2];
+          const iframeHTML = `
+            <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; background: black;">
+              <iframe 
+                src="https://www.youtube.com/embed/${videoId}" 
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                allowfullscreen>
+              </iframe>
+            </div>`;
+          p.outerHTML = iframeHTML;
+        }
+      });
+      return tempDiv.innerHTML;
+    }
+
+    // Load a markdown post
+    async function loadMarkdown(url) {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Network response was not ok');
+        const text = await response.text();
+
+        history.pushState(null, '', '?post=' + encodeURIComponent(url));
+
+        const contentDiv = document.getElementById('content');
+        const shareButtonHTML = '<button id="share-button">🔗 Share</button>';
+        let rendered = marked.parse(text);
+        rendered = embedYouTubeVideos(rendered);
+        contentDiv.innerHTML = shareButtonHTML + rendered;
+
+        document.getElementById('share-button').addEventListener('click', () => {
+          const shareUrl = window.location.href;
+          navigator.clipboard.writeText(shareUrl)
+            .then(() => alert('Link copied to clipboard!'))
+            .catch(() => alert('Failed to copy link.'));
+        });
+      } catch (error) {
+        console.error('Error loading markdown:', error);
+        document.getElementById('content').innerHTML = '<p>Error loading microblog.</p>';
+      }
+    }
+
+    // Load external markdown (for the About page)
+    async function loadMarkdownExternal(url) {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Network response was not ok');
+        const text = await response.text();
+        let rendered = marked.parse(text);
+        rendered = embedYouTubeVideos(rendered);
+        document.getElementById('content').innerHTML = rendered;
+      } catch (error) {
+        console.error('Error loading external markdown:', error);
+        document.getElementById('content').innerHTML = '<p>Error loading content.</p>';
+      }
+    }
+
+    // Render the list of posts as sidebar cards
+    function renderPosts(posts) {
+      const container = document.getElementById('posts-container');
+      container.innerHTML = "";
+      posts.forEach(post => {
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        const titleDiv = document.createElement('div');
+        titleDiv.className = 'title';
+        titleDiv.textContent = post.title;
+
+        const dateDiv = document.createElement('div');
+        dateDiv.className = 'date';
+        dateDiv.textContent = formatDate(post.date_published);
+
+        card.appendChild(titleDiv);
+        card.appendChild(dateDiv);
+
+        card.addEventListener('click', () => {
+          loadMarkdown(post.link);
+        });
+
+        container.appendChild(card);
+      });
+    }
+
+    // Load posts from posts.json
+    async function loadPosts() {
+      try {
+        const response = await fetch('posts.json');
+        if (!response.ok) throw new Error('Failed to fetch posts.json');
+        const posts = await response.json();
+
+        const validatedPosts = await Promise.all(posts.map(async post => {
+          try {
+            const res = await fetch(post.link, { method: 'HEAD' });
+            if (!res.ok) throw new Error('Status ' + res.status);
+            return post;
+          } catch (error) {
+            console.error('Failed to load microblog "' + post.title + '" from ' + post.link + ':', error);
+            return null;
+          }
+        }));
+
+        const validPosts = validatedPosts.filter(post => post !== null);
+        validPosts.sort((a, b) => new Date(b.date_published) - new Date(a.date_published));
+
+        validPostsGlobal = validPosts;
+        renderPosts(validPostsGlobal);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const postLinkParam = urlParams.get('post');
+        if (postLinkParam) {
+          const targetPost = validPostsGlobal.find(post => post.link === postLinkParam);
+          if (targetPost) {
+            loadMarkdown(targetPost.link);
+          }
+        }
+      } catch (error) {
+        console.error('Error loading posts:', error);
+        document.getElementById('posts-container').innerHTML = '<p>Error loading microblogs.</p>';
+      }
+    }
+
+    // Live search in the sidebar
+    document.getElementById('search-box').addEventListener('input', function(e) {
+      const searchTerm = e.target.value.toLowerCase();
+      const filtered = validPostsGlobal.filter(post =>
+        post.title.toLowerCase().includes(searchTerm)
+      );
+      renderPosts(filtered);
+    });
+
+    // Home / About menu actions
+    document.getElementById('home-menu').addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('content').innerHTML = defaultContent;
+      history.pushState(null, '', window.location.pathname);
+    });
+
+    document.getElementById('about-menu').addEventListener('click', (e) => {
+      e.preventDefault();
+      // Example about page
+      const aboutUrl = 'https://raw.githubusercontent.com/garbledhamster/joesaverage.blog/refs/heads/main/README.md';
+      loadMarkdownExternal(aboutUrl);
+    });
+
+    // DOM loaded: set up the initial sidebar state, then load posts
+    document.addEventListener('DOMContentLoaded', () => {
+      setInitialSidebarState();
+      loadPosts();
+
+      // Hide sidebar when clicking or touching the blog post area on mobile
+      const contentArea = document.getElementById('content');
+      contentArea.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+          const sidebar = document.getElementById('sidebar');
+          if (!sidebar.classList.contains('hidden')) {
+            sidebar.classList.add('hidden');
+            sidebar.style.transform = 'translateX(-100%)';
+          }
+        }
+      });
+      contentArea.addEventListener('touchstart', () => {
+        if (window.innerWidth <= 768) {
+          const sidebar = document.getElementById('sidebar');
+          if (!sidebar.classList.contains('hidden')) {
+            sidebar.classList.add('hidden');
+            sidebar.style.transform = 'translateX(-100%)';
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
