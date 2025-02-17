@@ -1,4 +1,4 @@
-> “Every winner and every loser have the same goals... It’s the activities that you do that make you unique.” 
+> "Every winner and every loser have the same goals... It’s the activities that you do that make you unique. The goal of the winner is to commit to the activities." 
 >
 > — Alex Hormozi
 
