@@ -31,6 +31,7 @@
       line-height: 1.6;
     }
 
+    /* Top Navigation Bar */
     #menu {
       display: flex;
       align-items: center;
@@ -54,26 +55,7 @@
       margin-right: 10px;
     }
 
-    #menu a {
-      margin-right: 20px;
-      text-decoration: none;
-      color: var(--paragraph-color);
-      font-size: 1rem;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    #menu a:hover {
-      text-decoration: underline;
-    }
-
-    .container {
-      margin-top: 60px;
-      min-height: calc(100vh - 60px);
-      position: relative;
-      overflow: hidden;
-    }
-
+    /* Sidebar Styles */
     .sidebar {
       position: fixed;
       top: 60px;
@@ -94,9 +76,35 @@
       transform: translateX(-100%);
     }
 
-    .sidebar h2 {
-      margin-top: 0;
+    .sidebar-header {
+      margin-bottom: 15px;
+    }
+
+    .sidebar-header h2 {
+      margin: 0;
       color: var(--header-color);
+    }
+
+    .sidebar-nav {
+      margin: 5px 0;
+    }
+
+    .sidebar-nav a {
+      text-decoration: none;
+      color: var(--paragraph-color);
+      font-weight: bold;
+      margin: 0 5px;
+    }
+
+    .sidebar-nav a:hover {
+      text-decoration: underline;
+    }
+
+    .sidebar-search-label {
+      font-family: 'PT Mono', monospace;
+      color: var(--header-color);
+      margin-top: 10px;
+      margin-bottom: 5px;
     }
 
     #search-box {
@@ -141,12 +149,14 @@
       max-width: 800px;
       margin: 0 auto;
       padding: 20px;
+      margin-top: 40px;
     }
 
     /* Narrow post wrapper */
     .post-wrapper {
       max-width: 600px;
       margin: 0 auto;
+      margin-top: 40px;
     }
 
     .content h1,
@@ -200,20 +210,6 @@
       margin-top: 10px;
     }
 
-    #share-button {
-      margin-bottom: 15px;
-      padding: 5px 10px;
-      font-family: 'PT Sans Pro', sans-serif;
-      cursor: pointer;
-      border: 2px solid var(--border-color);
-      background: transparent;
-      color: var(--paragraph-color);
-    }
-
-    #share-button:hover {
-      background-color: rgba(197, 27, 254, 0.1);
-    }
-
     @media screen and (max-width: 768px) {
       .sidebar {
         transform: translateX(-100%);
@@ -224,13 +220,16 @@
 <body>
   <nav id="menu">
     <button id="menu-toggle">☰</button>
-    <a href="#" id="home-menu">Home</a>
-    <a href="#" id="about-menu">About</a>
   </nav>
 
   <div class="container">
     <div class="sidebar hidden" id="sidebar">
-      <h2>📝 Microblogs</h2>
+      <div class="sidebar-header">
+        <h2>Zettelkasten.Shop Blog</h2>
+        <div class="sidebar-nav">
+          <a href="#" id="home-menu">Main page</a> | <a href="#" id="about-menu">About this blog</a>
+        </div>
+      </div>
       <input type="text" id="search-box" placeholder="Search microblogs..." />
       <div id="posts-container"></div>
     </div>
@@ -245,15 +244,11 @@
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
   <script>
+    // Always start with the sidebar hidden
     function setInitialSidebarState() {
       const sidebar = document.getElementById('sidebar');
-      if (window.innerWidth > 768) {
-        sidebar.classList.remove('hidden');
-        sidebar.style.transform = 'translateX(0)';
-      } else {
-        sidebar.classList.add('hidden');
-        sidebar.style.transform = 'translateX(-100%)';
-      }
+      sidebar.classList.add('hidden');
+      sidebar.style.transform = 'translateX(-100%)';
     }
 
     document.getElementById('menu-toggle').addEventListener('click', () => {
@@ -279,7 +274,7 @@
 
     function formatDate(dateStr) {
       const options = { year: 'numeric', month: 'short', day: 'numeric' };
-      return new Date(dateStr).toLocaleDateString(undefined, options);
+      return new Date(dateStr.replace(/-/g, '/')).toLocaleDateString(undefined, options);
     }
 
     function embedYouTubeVideos(html) {
@@ -312,20 +307,10 @@
         history.pushState(null, '', '?post=' + encodeURIComponent(url));
 
         const contentDiv = document.getElementById('content');
-        const shareButtonHTML = '<button id="share-button">🔗 Share</button>';
         let rendered = marked.parse(text);
         rendered = embedYouTubeVideos(rendered);
 
-        contentDiv.innerHTML = '<div class="post-wrapper">' + shareButtonHTML + rendered + '</div>';
-
-        const shareButton = document.getElementById('share-button');
-        shareButton.addEventListener('click', () => {
-          const shareUrl = window.location.href;
-          /* Instead of direct copy, use postMessage for cross-iframe. */
-          window.parent.postMessage({ type: 'SHARE_REQUEST', url: shareUrl }, '*');
-          alert('Share request sent to parent.');
-        });
-
+        contentDiv.innerHTML = '<div class="post-wrapper">' + rendered + '</div>';
       } catch (error) {
         console.error('Error loading markdown:', error);
         document.getElementById('content').innerHTML =
@@ -435,35 +420,6 @@
     document.addEventListener('DOMContentLoaded', () => {
       setInitialSidebarState();
       loadPosts();
-    });
-
-    /* Close the sidebar if user clicks or taps outside it (mobile only). */
-    document.addEventListener('click', (e) => {
-      if (window.innerWidth <= 768) {
-        const sidebar = document.getElementById('sidebar');
-        const menuToggle = document.getElementById('menu-toggle');
-        if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
-          sidebar.classList.add('hidden');
-          sidebar.style.transform = 'translateX(-100%)';
-        }
-      }
-    });
-
-    /* Hammer.js for swipe gestures */
-    const hammer = new Hammer(document.body);
-    hammer.on('swipeleft', () => {
-      if (window.innerWidth <= 768) {
-        const sidebar = document.getElementById('sidebar');
-        sidebar.classList.add('hidden');
-        sidebar.style.transform = 'translateX(-100%)';
-      }
-    });
-    hammer.on('swiperight', () => {
-      if (window.innerWidth <= 768) {
-        const sidebar = document.getElementById('sidebar');
-        sidebar.classList.remove('hidden');
-        sidebar.style.transform = 'translateX(0)';
-      }
     });
   </script>
 </body>

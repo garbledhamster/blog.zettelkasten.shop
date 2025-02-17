@@ -1,18 +1,38 @@
 [
     {
-        "title": "Expert Learning Coach's Productivity Advice",
-        "date_published": "2025-02-14",
-        "last_edited": "2025-02-14",
+        "title": "An Expert Learning Coach's Productivity Advice",
+        "date_published": "2025-02-13",
+        "last_edited": "2025-02-13",
         "description": "Stop trusting your brain to magically stay on track...",
         "link": "posts/0001_ExperLearningCoachsProductivityAdvice.md"
     },
     {
         "title": "Keep Going Until You Make it",
-        "date_published": "2025-02-17",
-        "last_edited": "2025-02-17",
+        "date_published": "2025-02-14",
+        "last_edited": "2025-02-14",
         "description": "Consistency is the key to making it.",
         "link": "posts/0002_KeepGoingUntilYouMakeIt.md"
+    },
+    {
+        "title": "No. 1 Brain Doctor's Advice in 2025",
+        "date_published": "2025-02-15",
+        "last_edited": "2025-02-15",
+        "description": "Dr. Daniel Amen, a renowned psychiatrist who has scanned over 260,000 brains...",
+        "link": "posts/0003_No1BrainDoctorsAdviceIn2025.md"
+    },
+    {
+        "title": "Read Less, Understand More",
+        "date_published": "2025-02-16",
+        "last_edited": "2025-02-16",
+        "description": "Many people mistake reading widely for reading well...",
+        "link": "posts/0004_ReadLessUnderstandMore.md"
+    },
+    {
+        "title": "What Is Visual Thinking and How to Use It with Zettelkasten",
+        "date_published": "2025-02-17",
+        "last_edited": "2025-02-17",
+        "description": "A Zettelkasten is about making connections, but sometimes pure text isn’t enough to capture the relationships between ideas. Visual thinking—using simple sketches, diagrams, and spatial arrangements—can bring clarity where words fall short. Dan Roam’s The Back of the Napkin lays out a process for breaking down problems into who, what, where, when, how, and why, a structure that aligns perfectly with organizing knowledge.",
+        "link": "posts/0005_WhatIsVisualThinking.md"
     }
 ]
-
 
