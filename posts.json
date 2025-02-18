@@ -30,9 +30,24 @@
     {
         "title": "What Is Visual Thinking and How to Use It with Zettelkasten",
         "date_published": "2025-02-17",
-        "last_edited": "2025-02-17",
-        "description": "A Zettelkasten is about making connections, but sometimes pure text isn’t enough to capture the relationships between ideas. Visual thinking—using simple sketches, diagrams, and spatial arrangements—can bring clarity where words fall short. Dan Roam’s The Back of the Napkin lays out a process for breaking down problems into who, what, where, when, how, and why, a structure that aligns perfectly with organizing knowledge.",
+        "last_edited": "2025-02-18",
+        "description": "A Zettelkasten is about making connections, but sometimes pure text isn\u2019t enough to capture the relationships between ideas. Visual thinking\u2014using simple sketches, diagrams, and spatial arrangements\u2014can bring clarity where words fall short. Dan Roam\u2019s The Back of the Napkin lays out a process for breaking down problems into who, what, where, when, how, and why, a structure that aligns perfectly with organizing knowledge.",
         "link": "posts/0005_WhatIsVisualThinking.md"
+    },
+    {
+        "title": "The Ripple Effect of FAA Budget Cuts",
+        "date_published": "2025-02-18",
+        "time_published": "05:59:05",
+        "last_edited": "2025-02-18",
+        "description": "Explore the potential consequences of sudden budget cuts to the Federal Aviation Administration (FAA) and how it could impact air travel safety, efficiency, and the economy.",
+        "link": "posts\\0006_therippleeffectoffaabudgetcuts.md"
+    },
+    {
+        "title": "Embracing the Unfamiliar: How to Read Difficult Books",
+        "date_published": "2025-02-18",
+        "time_published": "06:15:34",
+        "last_edited": "2025-02-18",
+        "description": "Exploring the art of reading challenging texts without getting bogged down by confusion, and how to utilize your existing knowledge to deepen understanding.",
+        "link": "posts\\0007_generatedpost.md"
     }
 ]
-
