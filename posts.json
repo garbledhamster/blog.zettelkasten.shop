@@ -40,7 +40,7 @@
         "time_published": "05:59:05",
         "last_edited": "2025-02-18",
         "description": "Explore the potential consequences of sudden budget cuts to the Federal Aviation Administration (FAA) and how it could impact air travel safety, efficiency, and the economy.",
-        "link": "posts\\0006_therippleeffectoffaabudgetcuts.md"
+        "link": "posts/0006_therippleeffectoffaabudgetcuts.md"
     },
     {
         "title": "Embracing the Unfamiliar: How to Read Difficult Books",
@@ -48,14 +48,14 @@
         "time_published": "06:15:34",
         "last_edited": "2025-02-18",
         "description": "Exploring the art of reading challenging texts without getting bogged down by confusion, and how to utilize your existing knowledge to deepen understanding.",
-        "link": "posts\\0007_generatedpost.md"
+        "link": "posts/0007_generatedpost.md"
     },
     {
         "title": "TROUBLESHOOTING GUIDE: Outlearning Everyone",
         "date_published": "2025-02-19",
         "last_edited": "2025-02-19",
         "description": "# **TROUBLESHOOTING GUIDE**  \n**You're Not Behind: My System for Outlearning Everyone**  \n\nhttps://youtu.be/3Ju1I37jWUM?si=fjW8I8xeKeWEK3xT\n\n## **Common Challenges & Solutions**  \n\n### **1. Issue: Difficulty Adopting a Winning Mindset**  \n#### **Possible Causes:**  \n- Holding negative self-beliefs that undermine progress  \n- Blaming external conditions or educators for lack of results  \n- Fear of failure or resistance to new perspectives  \n\n#### **Solution Steps:**  \n1. **Identify Your Approach** \u2013 Determine whether you are positive active (determined to succeed no matter what), positive passive (if someone else can do it, so can I), neutral passive (we\u2019ll see if it works), negative passive (it probably won\u2019t work for me), or negative active (actively proving it won\u2019t work).  \n2. **Reframe Limiting Beliefs** \u2013 Recognize that you\u2014not your teacher or environment\u2014are the decisive factor. Embrace the idea that winners will win regardless of circumstances.  \n3. **Commit Wholeheartedly** \u2013 Avoid \u201ctrying\u201d to succeed. Instead, do whatever it takes to achieve the outcome and remove any lingering \u201cfail\u201d option.",
-        "link": "posts\\0008_troubleshootingguide:outlearningeveryone.md"
+        "link": "posts/0008_troubleshootingguide:outlearningeveryone.md"
     },
     {
         "title": "Outlearning Everyone: Mastering Your Mindset",
@@ -63,6 +63,6 @@
         "time_published": "09:23:43",
         "last_edited": "2025-02-19",
         "description": "A guide to shifting your mindset for personal and academic success.",
-        "link": "posts\\0009_outlearningeveryone:masteringyourmindset.md"
+        "link": "posts/0009_outlearningeveryone:masteringyourmindset.md"
     }
 ]
