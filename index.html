@@ -12,169 +12,109 @@
   <link rel="icon" type="image/png" sizes="512x512" href="images/favicon/android-chrome-512x512.png">
   <meta name="theme-color" content="#402554">
   <link href="https://fonts.googleapis.com/css2?family=PT+Mono&family=PT+Sans+Pro&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/feather-icons"></script>
   <style>
     :root {
       --primary-bg: #402554;
       --header-color: #E6B7FF;
       --paragraph-color: #ffffff;
       --border-color: #C51BFE;
-      --sidebar-width: 300px;
     }
-
     body {
       font-family: 'PT Sans Pro', sans-serif;
       margin: 0;
-      padding: 0;
       background-color: var(--primary-bg);
       color: var(--paragraph-color);
       font-size: 16px;
       line-height: 1.6;
     }
-
-    /* Top Navigation Bar */
-    #menu {
-      display: flex;
-      align-items: center;
-      background-color: var(--primary-bg);
-      padding: 10px 20px;
-      border-bottom: 4px solid var(--border-color);
-      font-family: 'PT Mono', monospace;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 2000;
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      position: relative;
     }
-
+    #menu {
+      position: relative;
+      background: var(--primary-bg);
+      padding: 10px 20px;
+      font-family: 'PT Mono', monospace;
+    }
     #menu-toggle {
       background: none;
       border: none;
       font-size: 1.5rem;
-      color: var(--paragraph-color);
+      color: var(--border-color);
       cursor: pointer;
-      margin-right: 10px;
+      display: block;
+      margin: 0 auto;
     }
-
-    /* Sidebar Styles */
-    .sidebar {
-      position: fixed;
-      top: 60px;
+    #dropdown-menu {
+      position: absolute;
+      top: 100%;
       left: 0;
-      width: var(--sidebar-width);
-      bottom: 0;
+      height: 90vh;
+      width: 100%;
       background: var(--primary-bg);
-      border-right: 4px solid var(--border-color);
-      padding: 20px;
-      font-family: 'PT Mono', monospace;
+      border: 2px solid var(--border-color);
+      box-sizing: border-box;
+      padding: 10px;
+      transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+      max-height: 0;
       overflow-y: auto;
-      transform: translateX(0);
-      transition: transform 0.3s ease;
-      z-index: 1500;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 1000;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
     }
-
-    .sidebar.hidden {
-      transform: translateX(-100%);
+    #dropdown-menu::-webkit-scrollbar {
+      width: 0;
+      display: none;
     }
-
-    .sidebar-header {
-      margin-bottom: 15px;
+    /* Increased to 700px here */
+    #dropdown-menu.show {
+      max-height: 700px;
+      opacity: 1;
+      pointer-events: auto;
     }
-
-    .sidebar-header h2 {
-      margin: 0;
-      color: var(--header-color);
-    }
-
-    .sidebar-nav {
-      margin: 5px 0;
-    }
-
-    .sidebar-nav a {
+    #dropdown-menu a {
       text-decoration: none;
       color: var(--paragraph-color);
       font-weight: bold;
-      margin: 0 5px;
+      margin-right: 10px;
     }
-
-    .sidebar-nav a:hover {
-      text-decoration: underline;
-    }
-
-    .sidebar-search-label {
-      font-family: 'PT Mono', monospace;
-      color: var(--header-color);
-      margin-top: 10px;
-      margin-bottom: 5px;
-    }
-
-    #search-box {
+    #dropdown-menu input {
       width: 100%;
       padding: 8px;
-      margin-bottom: 15px;
-      box-sizing: border-box;
       border: 2px solid var(--border-color);
-      font-family: 'PT Sans Pro', sans-serif;
-      font-size: 1rem;
-      background-color: transparent;
-      color: var(--paragraph-color);
-    }
-
-    .card {
+      margin-top: 10px;
       background: transparent;
-      border: 2px solid var(--border-color);
-      margin-bottom: 15px;
-      padding: 10px;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-    }
-
-    .card:hover {
-      background-color: rgba(197, 27, 254, 0.1);
-    }
-
-    .card .title {
-      font-size: 1.2em;
-      font-weight: bold;
-      font-family: 'PT Mono', monospace;
-      color: var(--header-color);
-    }
-
-    .card .date {
-      font-size: 0.9em;
-      font-family: 'PT Mono', monospace;
       color: var(--paragraph-color);
     }
+    #posts-container {
+      margin-top: 10px;
+      overflow-y: auto;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
 
+    }
+    #posts-container::-webkit-scrollbar {
+      width: 0;
+      display: none;
+    }
     .content {
-      max-width: 800px;
-      margin: 0 auto;
       padding: 20px;
-      margin-top: 40px;
     }
-
-    /* Narrow post wrapper */
-    .post-wrapper {
-      max-width: 600px;
-      margin: 0 auto;
-      margin-top: 40px;
-    }
-
     .content h1,
     .content h2,
-    .content h3,
-    .content h4,
-    .content h5,
-    .content h6 {
+    .content h3 {
       font-family: 'PT Mono', monospace;
       color: var(--header-color);
       margin-top: 1em;
       margin-bottom: 0.5em;
       line-height: 1.3;
     }
-
     .content p,
-    .content pre,
-    .content code,
     .content ul,
     .content ol,
     .content li {
@@ -184,23 +124,12 @@
       margin-left: auto;
       margin-right: auto;
     }
-
-    .content blockquote {
-      font-family: 'PT Mono', monospace;
-      border-left: 4px solid var(--border-color);
-      padding-left: 10px;
-      color: var(--paragraph-color);
-      margin: 1em auto;
-      max-width: 65ch;
-    }
-
     .content img {
       max-width: 100%;
       height: auto;
       display: block;
       margin: 1em auto;
     }
-
     .content h1::after {
       content: "";
       display: block;
@@ -209,218 +138,83 @@
       background-color: var(--border-color);
       margin-top: 10px;
     }
-
-    @media screen and (max-width: 768px) {
-      .sidebar {
-        transform: translateX(-100%);
+    .card {
+      background: transparent;
+      border: 2px solid var(--border-color);
+      margin-bottom: 15px;
+      padding: 10px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    .card:hover {
+      background-color: rgba(197, 27, 254, 0.1);
+    }
+    .card .title {
+      font-size: 1.2em;
+      font-weight: bold;
+      font-family: 'PT Mono', monospace;
+      color: var(--header-color);
+    }
+    .card .date {
+      font-size: 0.9em;
+      font-family: 'PT Mono', monospace;
+      color: var(--paragraph-color);
+    }
+    @media (max-width: 600px) {
+      .container {
+        max-width: 90%;
+      }
+      #dropdown-menu {
+        width: 100%;
       }
     }
   </style>
 </head>
 <body>
-  <nav id="menu">
-    <button id="menu-toggle">📝 POSTS</button>
-  </nav>
-
   <div class="container">
-    <div class="sidebar hidden" id="sidebar">
-      <div class="sidebar-header">
-        <h2>Zettelkasten.Shop Blog</h2>
-        <div class="sidebar-nav">
-          <a href="#" id="home-menu">Main page</a> | <a href="#" id="about-menu">About this blog</a>
-        </div>
+    <nav id="menu">
+      <button id="menu-toggle"><i data-feather="menu"></i></button>
+      <div id="dropdown-menu">
+        <a href="#" id="home-menu">Main page</a>
+        <a>|</a>
+        <a href="#" id="about-menu">About this blog</a>
+        <input type="text" id="search-box" placeholder="Search microblogs...">
+        <div id="posts-container"></div>
       </div>
-      <input type="text" id="search-box" placeholder="Search microblogs..." />
-      <div id="posts-container"></div>
-    </div>
+    </nav>
     <div class="content" id="content">
       <div class="post-wrapper" id="post-wrapper">
-        <h1>zettelkasten.shop</h1>
-        <p>Welcome to zettelkasten.shop—a clean space for background-knowledge microblogs. Here, I share brief bursts of thought (each under 9 sentences) inspired by daily insights. Select a microblog from the sidebar to dive in.</p>
+        <h1>blog.zettelkasten.shop</h1>
+        <p>
+          Welcome to this my experimental blog. To navigate, click the purple menu button in the center of the header; inside, you’ll find links to the main page, the about page, and a searchable list of microblogs. Type any keywords into the search bar to filter through older posts. I’m exploring different blogging formats here, so things may look or feel different as this evolves. My goal is that each short post provides a fresh insight or valuable thought. Enjoy browsing, and thanks for stopping by!
+        </p>
       </div>
     </div>
   </div>
-
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
   <script>
-    // Always start with the sidebar hidden
-    function setInitialSidebarState() {
-      const sidebar = document.getElementById('sidebar');
-      sidebar.classList.add('hidden');
-      sidebar.style.transform = 'translateX(-100%)';
-    }
-
-    document.getElementById('menu-toggle').addEventListener('click', () => {
-      const sidebar = document.getElementById('sidebar');
-      sidebar.classList.toggle('hidden');
-      if (sidebar.classList.contains('hidden')) {
-        sidebar.style.transform = 'translateX(-100%)';
-      } else {
-        sidebar.style.transform = 'translateX(0)';
-      }
-    });
-
-    window.addEventListener('resize', () => {
-      setInitialSidebarState();
-    });
-
-    let validPostsGlobal = [];
-    const defaultContent =
-      '<div class="post-wrapper">' +
-      '<h1>blog.zettelkasten.shop</h1>' +
-      '<p>Welcome to Zettelkasten.Shop\'s Blog—a clean space for background-knowledge microblogs. Here, I share brief bursts of thought (each under 9 sentences) inspired by daily insights. Select a microblog from the sidebar to dive in.</p>' +
-      '</div>';
-
-    function formatDate(dateStr) {
-      const options = { year: 'numeric', month: 'short', day: 'numeric' };
-      return new Date(dateStr.replace(/-/g, '/')).toLocaleDateString(undefined, options);
-    }
-
-    function embedYouTubeVideos(html) {
-      const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = html;
-      const youtubeRegex = /^(https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/))([A-Za-z0-9_-]{11})(?:\S*)$/;
-      tempDiv.querySelectorAll('p').forEach(p => {
-        const text = p.textContent.trim();
-        const match = text.match(youtubeRegex);
-        if (match) {
-          const videoId = match[2];
-          const iframeHTML = 
-            '<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; background: black;">' +
-            '<iframe src="https://www.youtube.com/embed/' + videoId + '" ' +
-            'style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" ' +
-            'frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" ' +
-            'allowfullscreen></iframe></div>';
-          p.outerHTML = iframeHTML;
-        }
-      });
-      return tempDiv.innerHTML;
-    }
-
-    async function loadMarkdown(url) {
-      try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('Network response was not ok');
-        const text = await response.text();
-
-        history.pushState(null, '', '?post=' + encodeURIComponent(url));
-
-        const contentDiv = document.getElementById('content');
-        let rendered = marked.parse(text);
-        rendered = embedYouTubeVideos(rendered);
-
-        contentDiv.innerHTML = '<div class="post-wrapper">' + rendered + '</div>';
-      } catch (error) {
-        console.error('Error loading markdown:', error);
-        document.getElementById('content').innerHTML =
-          '<div class="post-wrapper"><p>Error loading microblog.</p></div>';
-      }
-    }
-
-    async function loadMarkdownExternal(url) {
-      try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('Network response was not ok');
-        const text = await response.text();
-        let rendered = marked.parse(text);
-        rendered = embedYouTubeVideos(rendered);
-        document.getElementById('content').innerHTML =
-          '<div class="post-wrapper">' + rendered + '</div>';
-      } catch (error) {
-        console.error('Error loading external markdown:', error);
-        document.getElementById('content').innerHTML =
-          '<div class="post-wrapper"><p>Error loading content.</p></div>';
-      }
-    }
-
-    function renderPosts(posts) {
-      const container = document.getElementById('posts-container');
-      container.innerHTML = "";
-      posts.forEach(post => {
-        const card = document.createElement('div');
-        card.className = 'card';
-
-        const titleDiv = document.createElement('div');
-        titleDiv.className = 'title';
-        titleDiv.textContent = post.title;
-
-        const dateDiv = document.createElement('div');
-        dateDiv.className = 'date';
-        dateDiv.textContent = formatDate(post.date_published);
-
-        card.appendChild(titleDiv);
-        card.appendChild(dateDiv);
-
-        card.addEventListener('click', () => {
-          loadMarkdown(post.link);
-        });
-
-        container.appendChild(card);
-      });
-    }
-
-    async function loadPosts() {
-      try {
-        const response = await fetch('posts.json');
-        if (!response.ok) throw new Error('Failed to fetch posts.json');
-        const posts = await response.json();
-
-        const validatedPosts = await Promise.all(posts.map(async post => {
-          try {
-            const res = await fetch(post.link, { method: 'HEAD' });
-            if (!res.ok) throw new Error('Status ' + res.status);
-            return post;
-          } catch (error) {
-            console.error('Failed to load microblog "' + post.title + '" from ' + post.link + ':', error);
-            return null;
-          }
-        }));
-
-        const validPosts = validatedPosts.filter(post => post !== null);
-        validPosts.sort((a, b) => new Date(b.date_published) - new Date(a.date_published));
-
-        validPostsGlobal = validPosts;
-        renderPosts(validPostsGlobal);
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const postLinkParam = urlParams.get('post');
-        if (postLinkParam) {
-          const targetPost = validPostsGlobal.find(post => post.link === postLinkParam);
-          if (targetPost) {
-            loadMarkdown(targetPost.link);
-          }
-        }
-      } catch (error) {
-        console.error('Error loading posts:', error);
-        document.getElementById('posts-container').innerHTML = '<p>Error loading microblogs.</p>';
-      }
-    }
-
-    document.getElementById('search-box').addEventListener('input', function(e) {
-      const searchTerm = e.target.value.toLowerCase();
-      const filtered = validPostsGlobal.filter(post =>
-        post.title.toLowerCase().includes(searchTerm)
-      );
-      renderPosts(filtered);
-    });
-
-    document.getElementById('home-menu').addEventListener('click', (e) => {
-      e.preventDefault();
-      document.getElementById('content').innerHTML = defaultContent;
-      history.pushState(null, '', window.location.pathname);
-    });
-
-    document.getElementById('about-menu').addEventListener('click', (e) => {
-      e.preventDefault();
-      const aboutUrl = 'https://raw.githubusercontent.com/garbledhamster/blog.zettelkasten.shop/refs/heads/main/README.md';
-      loadMarkdownExternal(aboutUrl);
-    });
-
-    document.addEventListener('DOMContentLoaded', () => {
-      setInitialSidebarState();
+    function formatDate(e){return new Date(e.replace(/-/g,"/")).toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"})}
+    function embedYouTubeVideos(h){const d=document.createElement("div");d.innerHTML=h;const r=/^(https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/))([A-Za-z0-9_-]{11})(?:\S*)$/;d.querySelectorAll("p").forEach(p=>{const t=p.textContent.trim(),m=t.match(r);if(m){const i=m[2],f='<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; background: black;"><iframe src="https://www.youtube.com/embed/'+i+'" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>';p.outerHTML=f}});return d.innerHTML}
+    async function loadMarkdown(u){try{const r=await fetch(u);if(!r.ok)throw new Error("Network response was not ok");const t=await r.text();history.pushState(null,"","?post="+encodeURIComponent(u));const c=document.getElementById("content");let e=marked.parse(t);e=embedYouTubeVideos(e);c.innerHTML='<div class="post-wrapper">'+e+"</div>"}catch(o){document.getElementById("content").innerHTML='<div class="post-wrapper"><p>Error loading microblog.</p></div>'}}
+    async function loadMarkdownExternal(u){try{const r=await fetch(u);if(!r.ok)throw new Error("Network response was not ok");const t=await r.text();let e=marked.parse(t);e=embedYouTubeVideos(e);document.getElementById("content").innerHTML='<div class="post-wrapper">'+e+"</div>"}catch(o){document.getElementById("content").innerHTML='<div class="post-wrapper"><p>Error loading content.</p></div>'}}
+    function renderPosts(a){const c=document.getElementById("posts-container");c.innerHTML="";a.forEach(p=>{const d=document.createElement("div");d.className="card";const t=document.createElement("div");t.className="title";t.textContent=p.title;const s=document.createElement("div");s.className="date";s.textContent=formatDate(p.date_published);d.appendChild(t);d.appendChild(s);d.addEventListener("click",()=>{loadMarkdown(p.link)});c.appendChild(d)})}
+    let validPostsGlobal=[];
+    const defaultContent='<div class="post-wrapper"><h1>blog.zettelkasten.shop</h1><p>Welcome to this experimental blog. To navigate, click the purple menu button in the center of the header; inside, you’ll find links to the main page, the about page, and a searchable list of microblogs. Type any keywords into the search bar to filter through older posts. I’m exploring different blogging formats here, so things may look or feel different as this evolves. My goal is that each short post provides a fresh insight or valuable thought. Enjoy browsing, and thanks for stopping by!</p></div>';
+    async function loadPosts(){try{const r=await fetch("posts.json");if(!r.ok)throw new Error("Failed to fetch posts.json");const t=await r.json();const e=await Promise.all(t.map(async o=>{try{const n=await fetch(o.link,{method:"HEAD"});if(!n.ok)throw new Error("Status "+n.status);return o}catch(i){return null}}));const a=e.filter(o=>o!==null);a.sort((o,n)=>new Date(n.date_published)-new Date(o.date_published));validPostsGlobal=a;renderPosts(validPostsGlobal);const c=new URLSearchParams(window.location.search),d=c.get("post");if(d){const s=validPostsGlobal.find(o=>o.link===d);if(s)loadMarkdown(s.link)}}catch(p){document.getElementById("posts-container").innerHTML="<p>Error loading microblogs.</p>"}}
+    document.addEventListener("DOMContentLoaded", function() {
       loadPosts();
+      feather.replace();
     });
+    document.getElementById("search-box").addEventListener("input",function(e){const t=e.target.value.toLowerCase();const a=validPostsGlobal.filter(p=>p.title.toLowerCase().includes(t));renderPosts(a)});
+    document.getElementById("home-menu").addEventListener("click",e=>{e.preventDefault();document.getElementById("content").innerHTML=defaultContent;history.pushState(null,"",window.location.pathname)});
+    document.getElementById("about-menu").addEventListener("click", e => {
+  e.preventDefault();
+  const t = "README.md";
+  loadMarkdownExternal(t);
+});
+    document.getElementById("menu-toggle").addEventListener("click",function(){document.getElementById("dropdown-menu").classList.toggle("show")});
+    document.addEventListener("click",function(e){const m=document.getElementById("dropdown-menu"),t=document.getElementById("menu-toggle");if(!m.contains(e.target)&&!t.contains(e.target)){m.classList.remove("show")}});
+
   </script>
 </body>
 </html>

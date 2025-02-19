@@ -1,6 +1,6 @@
-# 💥 zettelkasten.shop
+# 💥 blog.zettelkasten.shop
 
-Welcome to **zettelkasten.shop**—a dynamic collection of microblogs, insights, and those light-bulb moments sparked by my explorations with ChatGPT and the ever-evolving world of ideas. 
+Welcome to **blog.zettelkasten.shop**—a dynamic collection of microblogs, insights, and those light-bulb moments sparked by my explorations with ChatGPT and the ever-evolving world of ideas. 
 
 This space is **my personal knowledge vault**, where I gather everything that piques my curiosity or fuels my inspiration. Think of it as a living library where each post is a unique puzzle piece in my journey of understanding.
 
