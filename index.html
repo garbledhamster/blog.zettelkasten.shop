@@ -31,13 +31,11 @@
     .container {
       max-width: 600px;
       margin: 0 auto;
-      /* position: relative; -- can stay or go, but not needed for #menu anymore */
     }
-    /* Changed position to sticky, removed position: relative; added top: 0; */
     #menu {
       position: sticky;
       top: 0;
-      z-index: 9999; /* ensures the menu appears on top */
+      z-index: 9999;
       background: var(--primary-bg);
       padding: 10px 20px;
       font-family: 'PT Mono', monospace;
