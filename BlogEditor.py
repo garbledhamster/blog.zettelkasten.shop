@@ -1,4 +1,5 @@
 import os
+import re     # <-- Added for regex replacement
 import sys
 import json
 import logging
@@ -96,11 +97,17 @@ def save_post():
         messagebox.showerror("Error", "Post Title cannot be empty!")
         return
     current_date = datetime.now().strftime("%Y-%m-%d")
+
+    # 1. Strip special characters from the title to keep only letters and numbers
+    #    For example: if user types "My Blog! Post #1", it becomes "MyBlogPost1".
+    clean_title = re.sub(r"[^a-zA-Z0-9]+", "", title)
+
     if current_file is None:
         number = get_next_post_number()
-        clean_title = "".join(title.split()).lower()
+        # 2. Combine the number with the cleaned title
         filename = f"{number}_{clean_title}.md"
-        filepath = os.path.join(POSTS_DIR, filename)
+        # 3. Force the path to use forward slashes
+        filepath = f"{POSTS_DIR}/{filename}"
         content = f"Title: {title}\nDescription: {description}\n\n{markdown}"
         try:
             with open(filepath, "w", encoding="utf-8") as file:
@@ -111,7 +118,7 @@ def save_post():
                 "date_published": current_date,
                 "last_edited": current_date,
                 "description": description,
-                "link": os.path.join(POSTS_DIR, filename)
+                "link": f"{POSTS_DIR}/{filename}"  # force forward slash
             }
             posts.append(new_entry)
             save_posts_json(posts)
@@ -122,19 +129,36 @@ def save_post():
             messagebox.showerror("Error", f"Failed to save post: {error}")
             logging.error("Failed to save post: %s", error)
     else:
-        filename = current_file
-        filepath = os.path.join(POSTS_DIR, filename)
+        # If we're updating an existing post
+        # Use the original current_file for the number portion
+        # but ensure the updated title is also sanitized
+        number = current_file.split("_", 1)[0]  # e.g. "0001" from "0001_MyBlog.md"
+        filename = f"{number}_{clean_title}.md"
+
+        # Because we're effectively renaming it with the new title, we should
+        # remove the old file so we don't leave duplicates around
+        old_filepath = f"{POSTS_DIR}/{current_file}"
+        new_filepath = f"{POSTS_DIR}/{filename}"
+
         content = f"Title: {title}\nDescription: {description}\n\n{markdown}"
         try:
-            with open(filepath, "w", encoding="utf-8") as file:
+            # Remove old file if it exists and if the filenames differ
+            if os.path.exists(old_filepath) and (old_filepath != new_filepath):
+                os.remove(old_filepath)
+
+            with open(new_filepath, "w", encoding="utf-8") as file:
                 file.write(content)
             posts = load_posts_json()
+
+            # Find the matching record and update it
             for post in posts:
-                if post.get("link") == os.path.join(POSTS_DIR, filename):
+                if post.get("link") == f"{POSTS_DIR}/{current_file}":
                     post["title"] = title
                     post["description"] = description
                     post["last_edited"] = current_date
+                    post["link"] = f"{POSTS_DIR}/{filename}"  # new link
                     break
+
             save_posts_json(posts)
             messagebox.showinfo("Success", f"Post updated: {filename}")
             refresh_post_list()
@@ -295,8 +319,11 @@ def minimal_grammar_check():
         return
     try:
         openai.api_key = config["api_key"]
-        prompt = ("Without breaking any markdown code, and actually going as far as fixing it, "
-                  "please minimally correct the grammar and punctuation of the following text without altering its original style:\n\n" + text)
+        prompt = (
+            "Without breaking any markdown code, and actually going as far as fixing it, "
+            "please minimally correct the grammar and punctuation of the following text without "
+            "altering its original style:\n\n" + text
+        )
         response = openai.ChatCompletion.create(
             model=config.get("model", "gpt-4o-mini"),
             messages=[
@@ -475,9 +502,12 @@ def generate_post():
             current_time = now.strftime("%H:%M:%S")
 
             number = get_next_post_number()
-            clean_title = "".join(title.split()).lower() or "generatedpost"
+
+            # Clean the title for the filename
+            clean_title = re.sub(r"[^a-zA-Z0-9]+", "", title) or "generatedpost"
             filename = f"{number}_{clean_title}.md"
-            filepath = os.path.join(POSTS_DIR, filename)
+            filepath = f"{POSTS_DIR}/{filename}"
+
             file_content = (
                 f"Title: {title}\n"
                 f"Description: {description}\n"
@@ -494,7 +524,7 @@ def generate_post():
                 "time_published": current_time,
                 "last_edited": current_date,
                 "description": description,
-                "link": os.path.join(POSTS_DIR, filename)
+                "link": f"{POSTS_DIR}/{filename}"
             }
             posts.append(new_entry)
             save_posts_json(posts)
@@ -512,7 +542,6 @@ def generate_post():
     generate_btn.pack(pady=5)
     cancel_btn = ttk.Button(gen_window, text="Cancel", command=gen_window.destroy)
     cancel_btn.pack(pady=5)
-
 
 # ----------------- UI Setup -----------------
 root = tk.Tk()
