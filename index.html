@@ -31,10 +31,13 @@
     .container {
       max-width: 600px;
       margin: 0 auto;
-      position: relative;
+      /* position: relative; -- can stay or go, but not needed for #menu anymore */
     }
+    /* Changed position to sticky, removed position: relative; added top: 0; */
     #menu {
-      position: relative;
+      position: sticky;
+      top: 0;
+      z-index: 9999; /* ensures the menu appears on top */
       background: var(--primary-bg);
       padding: 10px 20px;
       font-family: 'PT Mono', monospace;
@@ -71,7 +74,6 @@
       width: 0;
       display: none;
     }
-    /* Increased to 700px here */
     #dropdown-menu.show {
       max-height: 700px;
       opacity: 1;
@@ -96,7 +98,6 @@
       overflow-y: auto;
       -ms-overflow-style: none;
       scrollbar-width: none;
-
     }
     #posts-container::-webkit-scrollbar {
       width: 0;
@@ -206,15 +207,26 @@
       feather.replace();
     });
     document.getElementById("search-box").addEventListener("input",function(e){const t=e.target.value.toLowerCase();const a=validPostsGlobal.filter(p=>p.title.toLowerCase().includes(t));renderPosts(a)});
-    document.getElementById("home-menu").addEventListener("click",e=>{e.preventDefault();document.getElementById("content").innerHTML=defaultContent;history.pushState(null,"",window.location.pathname)});
+    document.getElementById("home-menu").addEventListener("click",e=>{
+      e.preventDefault();
+      document.getElementById("content").innerHTML=defaultContent;
+      history.pushState(null,"",window.location.pathname)
+    });
     document.getElementById("about-menu").addEventListener("click", e => {
-  e.preventDefault();
-  const t = "README.md";
-  loadMarkdownExternal(t);
-});
-    document.getElementById("menu-toggle").addEventListener("click",function(){document.getElementById("dropdown-menu").classList.toggle("show")});
-    document.addEventListener("click",function(e){const m=document.getElementById("dropdown-menu"),t=document.getElementById("menu-toggle");if(!m.contains(e.target)&&!t.contains(e.target)){m.classList.remove("show")}});
-
+      e.preventDefault();
+      const t = "README.md";
+      loadMarkdownExternal(t);
+    });
+    document.getElementById("menu-toggle").addEventListener("click",function(){
+      document.getElementById("dropdown-menu").classList.toggle("show")
+    });
+    document.addEventListener("click",function(e){
+      const m=document.getElementById("dropdown-menu"),
+            t=document.getElementById("menu-toggle");
+      if(!m.contains(e.target)&&!t.contains(e.target)){
+        m.classList.remove("show")
+      }
+    });
   </script>
 </body>
 </html>
