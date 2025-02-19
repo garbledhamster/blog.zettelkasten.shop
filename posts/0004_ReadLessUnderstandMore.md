@@ -1,5 +1,3 @@
-# Read Less, Understand More
-
 > "There have always been literate ignoramuses who have read too widely and not well. The Greeks had a name for such a mixture of learning and folly which might be applied to the bookish but poorly read of all ages. They are all sophomores."​
 > 
 > — Mortimer J. Adler

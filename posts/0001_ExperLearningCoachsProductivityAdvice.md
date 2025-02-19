@@ -1,6 +1,3 @@
-Title: An Expert Learning Coach's Productivity Advice
-Description: Stop trusting your brain to magically stay on track...
-
 > “Productivity is not about being busy; it’s about doing what actually moves you closer to your goals.”
 > 
 > — Justin Sung
