@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_PAT }}
 
       - name: Set Up Python
         uses: actions/setup-python@v4
@@ -22,11 +24,9 @@ jobs:
         run: python generate_sitemap.py
 
       - name: Commit and Push Sitemap
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
           git add sitemap.xml
           git commit -m "Auto-update sitemap.xml" || echo "No changes to commit"
-          git push https://x-access-token:${GH_PAT}@github.com/garbledhamster/blog.zettelkasten.shop.git main
+          git push
