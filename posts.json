@@ -1,58 +1,11 @@
 [
     {
-        "title": "An Expert Learning Coach's Productivity Advice",
-        "date_published": "2025-02-13",
-        "last_edited": "2025-02-13",
-        "description": "Stop trusting your brain to magically stay on track...",
-        "link": "posts/0001_ExperLearningCoachsProductivityAdvice.md"
-    },
-    {
-        "title": "Keep Going Until You Make it",
-        "date_published": "2025-02-14",
-        "last_edited": "2025-02-14",
-        "description": "Consistency is the key to making it.",
-        "link": "posts/0002_KeepGoingUntilYouMakeIt.md"
-    },
-    {
-        "title": "No. 1 Brain Doctor's Advice in 2025",
-        "date_published": "2025-02-15",
-        "last_edited": "2025-02-15",
-        "description": "Dr. Daniel Amen, a renowned psychiatrist who has scanned over 260,000 brains...",
-        "link": "posts/0003_No1BrainDoctorsAdviceIn2025.md"
-    },
-    {
-        "title": "Read Less, Understand More",
-        "date_published": "2025-02-16",
-        "last_edited": "2025-02-16",
-        "description": "Many people mistake reading widely for reading well...",
-        "link": "posts/0004_ReadLessUnderstandMore.md"
-    },
-    {
-        "title": "What Is Visual Thinking and How to Use It with Zettelkasten",
-        "date_published": "2025-02-17",
-        "last_edited": "2025-02-18",
-        "description": "A Zettelkasten is about making connections, but sometimes pure text isn\u2019t enough to capture the relationships between ideas. Visual thinking\u2014using simple sketches, diagrams, and spatial arrangements\u2014can bring clarity where words fall short. Dan Roam\u2019s The Back of the Napkin lays out a process for breaking down problems into who, what, where, when, how, and why, a structure that aligns perfectly with organizing knowledge.",
-        "link": "posts/0005_WhatIsVisualThinking.md"
-    },
-    {
-        "title": "The Ripple Effect of FAA Budget Cuts",
-        "date_published": "2025-02-18",
-        "last_edited": "2025-02-18",
-        "description": "Explore the potential consequences of sudden budget cuts to the Federal Aviation Administration (FAA) and how it could impact air travel safety, efficiency, and the economy.",
-        "link": "posts/0006_therippleeffectoffaabudgetcuts.md"
-    },
-    {
-        "title": "Embracing the Unfamiliar: How to Read Difficult Books",
-        "date_published": "2025-02-18",
-        "last_edited": "2025-02-18",
-        "description": "Exploring the art of reading challenging texts without getting bogged down by confusion, and how to utilize your existing knowledge to deepen understanding.",
-        "link": "posts/0007_EmbracingTheUnfamiliarHowToReadDifficultBooks.md"
-    },
-    {
-        "title": "Find Your Perfect Meditation Technique",
-        "date_published": "2025-02-19",
-        "last_edited": "2025-02-19",
-        "description": "\"We all have unique brains with unique cognitive fingerprints, and the biggest mistake that we make in teaching meditation is that we try to use one technique for all of the different brains,\"",
-        "link": "posts/0008_FindYourPerfectMeditationTechnique.md"
-    }
+        "title": "Skill: Word Recognition",
+        "date_published": "2025-02-23",
+        "last_edited": "2025-02-23",
+        "description": "word recognition,reading comprehension,phonics,sight words,context clues,elementary reading,literacy,learning to read,efficient reading,how to read",
+        "link": "posts/0001.md"
+    }    
 ]
+
+
