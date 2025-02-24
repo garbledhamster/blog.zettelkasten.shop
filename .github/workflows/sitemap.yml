@@ -3,12 +3,12 @@ name: Generate Sitemap
 on:
   push:
     branches:
-      - main  # Change this if your branch is named differently
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -19,13 +19,14 @@ jobs:
           python-version: '3.x'
 
       - name: Generate Sitemap
-        run: |
-          python generate_sitemap.py
+        run: python generate_sitemap.py
 
       - name: Commit and Push Sitemap
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
           git add sitemap.xml
           git commit -m "Auto-update sitemap.xml" || echo "No changes to commit"
-          git push
+          git push https://x-access-token:${GH_PAT}@github.com/garbledhamster/blog.zettelkasten.shop.git main
