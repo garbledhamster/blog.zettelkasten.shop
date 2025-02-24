@@ -3,18 +3,15 @@ name: Generate Sitemap
 on:
   push:
     branches:
-      - main
+      - main  # Change this if your branch is named differently
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Checkout Repository with PAT
+      - name: Checkout Repository
         uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GH_PAT }}
-          persist-credentials: false
 
       - name: Set Up Python
         uses: actions/setup-python@v4
@@ -22,15 +19,13 @@ jobs:
           python-version: '3.x'
 
       - name: Generate Sitemap
-        run: python generate_sitemap.py
+        run: |
+          python generate_sitemap.py
 
       - name: Commit and Push Sitemap
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
-          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/garbledhamster/blog.zettelkasten.shop.git
           git add sitemap.xml
           git commit -m "Auto-update sitemap.xml" || echo "No changes to commit"
-          git push origin main
+          git push
