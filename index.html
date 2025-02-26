@@ -211,26 +211,30 @@
         day:"numeric"
       });
     }
+
     function embedYouTubeVideos(htmlContent) {
       const tempDiv = document.createElement("div");
       tempDiv.innerHTML = htmlContent;
       const youtubeRegex = /^(https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/))([A-Za-z0-9_-]{11})(?:\S*)$/;
+
       tempDiv.querySelectorAll("p").forEach(p => {
         const text = p.textContent.trim();
         const match = text.match(youtubeRegex);
         if (match) {
           const videoId = match[2];
-          const iframeHTML = 
+          const iframeHTML =
             '<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; background: black;">' +
-            '<iframe src="https://www.youtube.com/embed/' + videoId + 
+            '<iframe src="https://www.youtube.com/embed/' + videoId +
             '" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" ' +
             'frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; ' +
             'gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>';
           p.outerHTML = iframeHTML;
         }
       });
+
       return tempDiv.innerHTML;
     }
+
     async function loadMarkdown(url) {
       try {
         const response = await fetch(url);
@@ -248,6 +252,7 @@
           '<div class="post-wrapper"><p>Error loading microblog.</p></div>';
       }
     }
+
     async function loadMarkdownExternal(url) {
       try {
         const response = await fetch(url);
@@ -264,36 +269,37 @@
           '<div class="post-wrapper"><p>Error loading content.</p></div>';
       }
     }
+
     function renderPosts(posts) {
       const postsContainer = document.getElementById("posts-container");
       postsContainer.innerHTML = "";
       posts.forEach(post => {
         const card = document.createElement("div");
         card.className = "card";
-        
+
         const titleEl = document.createElement("div");
         titleEl.className = "title";
         titleEl.textContent = post.title;
-        
+
         const dateEl = document.createElement("div");
         dateEl.className = "date";
         dateEl.textContent = formatDate(post.date_published);
-        
+
         card.appendChild(titleEl);
         card.appendChild(dateEl);
-        
-        // Close the menu after selecting a post
+
         card.addEventListener("click", () => {
           loadMarkdown(post.link);
           document.getElementById("dropdown-menu").classList.remove("show");
         });
-        
+
         postsContainer.appendChild(card);
       });
     }
+
     let validPostsGlobal = [];
     const defaultContent = '<div class="post-wrapper"><h1>blog.zettelkasten.shop</h1>' +
-  '<p>This microblog is for beginner and veteran students, professionals, and entrepreneurs who want to become the best version of themselves. The goal is to inspire growth and learning—ideally by exploring the material I write about, reading it yourself, and adding key insights to your own Zettelkasten. If you\'re not into reading for skill growth and knowledge, this blog isn\'t for you. I\'m currently on my path to becoming an entrepreneur, and this blog is dedicated to the skills that will get me there, as well as how I\'m applying them to move forward. Each post follows a simple format: a thought-provoking quote, the author or speaker, the source where I found it, and a concise explanation—at most a nine-sentence paragraph. To navigate, tap the hamburger menu to browse posts, click on one to read, and see if you learn something new. If you’re looking for a more structured approach to expanding your knowledge, check out <a href="https://theclassics.school" target="_blank">The Classics School</a> for self-guided, week-by-week lessons based on classic literature.</p></div>';
+      '<p>This microblog is for beginner and veteran students, professionals, and entrepreneurs who want to become the best version of themselves. The goal is to inspire growth and learning—ideally by exploring the material I write about, reading it yourself, and adding key insights to your own Zettelkasten. If you\'re not into reading for skill growth and knowledge, this blog isn\'t for you. I\'m currently on my path to becoming an entrepreneur, and this blog is dedicated to the skills that will get me there, as well as how I\'m applying them to move forward. Each post follows a simple format: a thought-provoking quote, the author or speaker, the source where I found it, and a concise explanation—at most a nine-sentence paragraph. To navigate, tap the hamburger menu to browse posts, click on one to read, and see if you learn something new. If you’re looking for a more structured approach to expanding your knowledge, check out <a href="https://theclassics.school" target="_blank">The Classics School</a> for self-guided, week-by-week lessons based on classic literature.</p></div>';
 
     async function loadPosts() {
       try {
@@ -302,10 +308,16 @@
           throw new Error("Failed to fetch posts.json");
         }
         const data = await response.json();
-        
-        // Check which post links are valid
+
+        // Check which post links are valid, but also ignore any future-dated posts
+        const now = new Date();
         const checkedPosts = await Promise.all(
           data.map(async post => {
+            // First, skip if post date is in the future
+            if (new Date(post.date_published) > now) {
+              return null;
+            }
+            // Then check if the post link is valid
             try {
               const res = await fetch(post.link, { method: "HEAD" });
               if (!res.ok) throw new Error("Status " + res.status);
@@ -315,12 +327,12 @@
             }
           })
         );
-        
+
         const validPosts = checkedPosts.filter(p => p !== null);
         validPosts.sort((a, b) => new Date(b.date_published) - new Date(a.date_published));
         validPostsGlobal = validPosts;
         renderPosts(validPostsGlobal);
-        
+
         // If there's a post in the query param, load it
         const params = new URLSearchParams(window.location.search);
         const postParam = params.get("post");
@@ -335,10 +347,12 @@
           "<p>Error loading microblogs.</p>";
       }
     }
+
     document.addEventListener("DOMContentLoaded", function() {
       loadPosts();
       feather.replace();
     });
+
     document.getElementById("search-box").addEventListener("input", function(e) {
       const searchTerm = e.target.value.toLowerCase();
       const filtered = validPostsGlobal.filter(post =>
@@ -346,7 +360,7 @@
       );
       renderPosts(filtered);
     });
-    
+
     // "About this blog" -> defaultContent
     document.getElementById("about-menu").addEventListener("click", e => {
       e.preventDefault();
@@ -354,10 +368,11 @@
       history.pushState(null,"",window.location.pathname);
       document.getElementById("dropdown-menu").classList.remove("show");
     });
-    
+
     document.getElementById("menu-toggle").addEventListener("click", function() {
       document.getElementById("dropdown-menu").classList.toggle("show");
     });
+
     document.addEventListener("click", function(e) {
       const dropdownMenu = document.getElementById("dropdown-menu");
       const menuToggle = document.getElementById("menu-toggle");
@@ -368,4 +383,3 @@
   </script>
 </body>
 </html>
- 
