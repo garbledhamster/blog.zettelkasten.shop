@@ -26,9 +26,21 @@
         "last_edited": "2025-02-26",
         "description": "pre-reading,skimming,inspectional reading,reading map,focus,how to read a book,adler,van doren,strategy,zettelkasten",
         "link": "posts/0004.md"
-    }
-    
-    
+    },
+    {
+        "title": "Skill: Inspectional Skimming",
+        "date_published": "2025-02-27",
+        "last_edited": "2025-02-27",
+        "description": "inspectional reading, skimming, pre-reading, book structure, reading techniques, active reading, efficiency, table of contents, chapter headings, thematic analysis",
+        "link": "posts/0005.md"
+    },
+    {
+        "title": "Skill: Surface Reading",
+        "date_published": "2025-02-28",
+        "last_edited": "2025-02-28",
+        "description": "surface reading, inspectional reading, comprehension, difficult books, big picture reading, reading techniques, active reading, exposure learning, foundational reading, efficient reading",
+        "link": "posts/0006.md"
+    }    
 ]
 
 
